@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Mode (Calm & Minimal) */
+  --background: #F9FAFB;
+  /* Gray 50 */
+  --surface: #FFFFFF;
+  /* White */
+  --foreground: #111827;
+  /* Gray 900 */
+  --foreground-muted: #4B5563;
+  /* Gray 600 */
+  --border: #E5E7EB;
+  /* Gray 200 */
+  --accent: #3B82F6;
+  /* Blue 500 */
+  --accent-foreground: #FFFFFF;
+}
+
+.dark {
+  /* Dark Mode (Developer Console / Slate) */
+  --background: #0F172A;
+  /* Slate 900 */
+  --surface: #1E293B;
+  /* Slate 800 */
+  --foreground: #E2E8F0;
+  /* Slate 200 */
+  --foreground-muted: #94A3B8;
+  /* Slate 400 */
+  --border: #334155;
+  /* Slate 700 */
+  --accent: #38BDF8;
+  /* Sky 400 */
+  --accent-foreground: #0F172A;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
