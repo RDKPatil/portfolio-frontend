@@ -9,9 +9,15 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-4xl">
-        <form action="{{ route('posts.store') }}" method="POST">
+        <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="space-y-4">
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700">Cover Image</label>
+                    <input type="file" name="image" id="image" accept="image/*"
+                        class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 p-2 border">
+                </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-700">Post Title</label>

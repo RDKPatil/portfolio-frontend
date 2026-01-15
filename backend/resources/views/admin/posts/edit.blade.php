@@ -9,10 +9,23 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-4xl">
-        <form action="{{ route('posts.update', $post) }}" method="POST">
+        <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="space-y-4">
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-700">Cover Image</label>
+                    @if($post->image)
+                        <div class="mt-2 mb-4">
+                            <img src="{{ asset('storage/' . $post->image) }}" alt="Current Image"
+                                class="h-32 w-auto rounded-lg shadow-sm">
+                        </div>
+                    @endif
+                    <input type="file" name="image" id="image" accept="image/*"
+                        class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 p-2 border">
+                    <p class="mt-1 text-sm text-gray-500">Leave empty to keep current image</p>
+                </div>
+
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-700">Post Title</label>

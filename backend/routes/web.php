@@ -23,4 +23,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::resource('about-sections', \App\Http\Controllers\Admin\AboutSectionController::class);
     Route::get('/contact', [\App\Http\Controllers\Admin\ContactInfoController::class, 'edit'])->name('contact.edit');
     Route::put('/contact', [\App\Http\Controllers\Admin\ContactInfoController::class, 'update'])->name('contact.update');
+
+    // Messages routes
+    Route::get('/messages', [\App\Http\Controllers\Admin\MessageController::class, 'webIndex'])->name('messages.index');
+    Route::patch('/messages/{id}/read', [\App\Http\Controllers\Admin\MessageController::class, 'markAsRead'])->name('messages.read');
+    Route::delete('/messages/{id}', [\App\Http\Controllers\Admin\MessageController::class, 'destroy'])->name('messages.destroy');
 });

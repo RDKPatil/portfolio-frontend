@@ -16,6 +16,7 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Image</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Title</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Published</th>
@@ -25,6 +26,13 @@
             <tbody class="divide-y divide-gray-200">
                 @foreach($posts as $post)
                     <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            @if($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="" class="h-10 w-16 object-cover rounded">
+                            @else
+                                <div class="h-10 w-16 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs">No Img</div>
+                            @endif
+                        </td>
                         <td class="px-6 py-4">
                             <div class="text-sm font-medium text-gray-900">{{ $post->title }}</div>
                             <div class="text-sm text-gray-500">/{{ $post->slug }}</div>

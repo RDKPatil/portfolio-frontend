@@ -1,39 +1,69 @@
+'use client';
+
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/ui/Section";
 import { BlogCard } from "@/components/blog/BlogCard";
+import { useEffect, useState } from "react";
+import api from "@/lib/api";
 
-// Placeholder data - in a real app this would come from MDX files or a CMS
-const posts = [
-    {
-        slug: "automating-workflows",
-        title: "Why Automation is the First Step to Scaling",
-        date: "Jan 2, 2026",
-        excerpt: "Manual processes kill manual creativity. Here is how I approach automating internal tools."
-    },
-    {
-        slug: "laravel-vs-node",
-        title: "Choosing the Right Backend for Enterprise Apps",
-        date: "Dec 15, 2025",
-        excerpt: "My take on when to use Laravel's robustness vs Node.js flexibility in 2026."
-    },
-    {
-        slug: "engineering-leadership",
-        title: "Transitioning from Senior Dev to Tech Lead",
-        date: "Nov 30, 2025",
-        excerpt: "Lessons learned in my first 6 months of leading a team of 5 developers."
-    }
-];
+type BlogPost = {
+    id: number;
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string;
+    published_at: string;
+    image_url: string | null;
+};
 
 export default function BlogPage() {
+    const [posts, setPosts] = useState<BlogPost[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                const response = await api.get('/posts');
+                setPosts(response.data);
+            } catch (error) {
+                console.error("Failed to fetch posts", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchPosts();
+    }, []);
+
+    if (loading) {
+        return (
+            <Container>
+                <Section className="max-w-3xl">
+                    <div className="text-center py-20 text-foreground-muted">Loading insights...</div>
+                </Section>
+            </Container>
+        );
+    }
+
     return (
         <Container>
-            <Section className="max-w-3xl">
-                <h1 className="text-4xl font-bold tracking-tight mb-8 text-foreground">Insights</h1>
+            <Section className="max-w-4xl">
+                <div className="mb-12">
+                    <h1 className="text-4xl font-bold tracking-tight mb-4 text-foreground">Insights</h1>
+                    <p className="text-xl text-foreground-muted">
+                        Thoughts on engineering leadership, backend architecture, and building scalable systems.
+                    </p>
+                </div>
 
                 <div className="space-y-12">
-                    {posts.map((post) => (
-                        <BlogCard key={post.slug} post={post} />
-                    ))}
+                    {posts.length > 0 ? (
+                        posts.map((post) => (
+                            <BlogCard key={post.id} post={post} />
+                        ))
+                    ) : (
+                        <div className="text-center py-12 bg-surface border border-border rounded-xl">
+                            <p className="text-foreground-muted">No posts published yet.</p>
+                        </div>
+                    )}
                 </div>
             </Section>
         </Container>

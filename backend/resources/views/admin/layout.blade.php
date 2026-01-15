@@ -50,6 +50,10 @@
                     class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors {{ request()->is('admin/contact*') ? 'bg-slate-800 text-white' : '' }}">
                     Contact Info
                 </a>
+                <a href="/admin/messages"
+                    class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors {{ request()->is('admin/messages*') ? 'bg-slate-800 text-white' : '' }}">
+                    Messages
+                </a>
                 <a href="/admin/posts"
                     class="flex items-center px-4 py-3 text-gray-300 hover:bg-slate-800 hover:text-white rounded-lg transition-colors {{ request()->is('admin/posts*') ? 'bg-slate-800 text-white' : '' }}">
                     Blog Posts

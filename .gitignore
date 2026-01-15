@@ -8,6 +8,9 @@ yarn-error.log*
 .next/
 out/
 
+#Backend
+backend/
+
 # Env
 .env
 .env.local
