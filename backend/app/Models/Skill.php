@@ -16,6 +16,13 @@ class Skill extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function ($skill) {
+            if (!$skill->order) {
+                $skill->order = static::max('order') + 1;
+            }
+        });
+
         static::addGlobalScope('order', function ($builder) {
             $builder->orderBy('order', 'asc');
         });

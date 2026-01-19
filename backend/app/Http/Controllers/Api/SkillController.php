@@ -12,7 +12,8 @@ class SkillController extends Controller
      */
     public function index()
     {
-        $skills = \App\Models\Skill::all()->groupBy('category');
+        // Grouping by category might be done on frontend, but sending flat list ordered is standard
+        $skills = \App\Models\Skill::orderBy('order')->get();
         return response()->json($skills);
     }
 

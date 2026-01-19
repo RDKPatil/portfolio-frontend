@@ -12,7 +12,7 @@ class AboutSection extends Model
         'company',
         'duration',
         'description',
-        'order'
+        'order',
     ];
 
     protected static function boot()

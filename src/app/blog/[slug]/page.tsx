@@ -1,12 +1,10 @@
-'use client';
-
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/ui/Section";
-import { useEffect, useState } from "react";
 import api from "@/lib/api";
+import { CommentSection } from "@/components/blog/CommentSection";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { Metadata } from "next";
 
 type BlogPost = {
     id: number;
@@ -16,41 +14,50 @@ type BlogPost = {
     content: string;
     published_at: string;
     image_url: string | null;
+    meta_title?: string;
+    meta_description?: string;
+    meta_keywords?: string;
 };
 
-export default function BlogPostPage() {
-    const params = useParams(); // Use useParams for client component
-    const slug = params?.slug as string;
+// Next.js Metadata Generator
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    try {
+        const params = await props.params;
+        const response = await api.get(`/posts/${params.slug}`);
+        const post: BlogPost = response.data;
 
-    const [post, setPost] = useState<BlogPost | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        if (slug) {
-            fetchPost();
-        }
-    }, [slug]);
-
-    async function fetchPost() {
-        try {
-            const response = await api.get(`/posts/${slug}`);
-            setPost(response.data);
-        } catch (err) {
-            setError('Failed to load post');
-        } finally {
-            setLoading(false);
-        }
+        return {
+            title: post.meta_title || post.title,
+            description: post.meta_description || post.excerpt,
+            keywords: post.meta_keywords?.split(',').map(k => k.trim()) || [],
+            openGraph: {
+                title: post.meta_title || post.title,
+                description: post.meta_description || post.excerpt,
+                images: post.image_url ? [post.image_url] : [],
+                type: 'article',
+                publishedTime: post.published_at,
+            }
+        };
+    } catch (error) {
+        return {
+            title: 'Blog Post',
+        };
     }
+}
 
-    if (loading) {
-        return (
-            <Container>
-                <Section className="max-w-3xl">
-                    <div className="text-center py-20 text-foreground-muted">Loading...</div>
-                </Section>
-            </Container>
-        );
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+    const params = await props.params;
+    let post: BlogPost | null = null;
+    let error = '';
+
+    try {
+        // Fetch data on the server
+        console.log(`Fetching post: /posts/${params.slug}`); // Debug log
+        const response = await api.get(`/posts/${params.slug}`);
+        post = response.data;
+    } catch (err: any) {
+        console.error('Fetch Error:', err.message, err.response?.status); // Detailed error
+        error = 'Failed to load post';
     }
 
     if (error || !post) {
@@ -100,14 +107,12 @@ export default function BlogPostPage() {
                         )}
                     </header>
 
-                    <div className="prose prose-invert max-w-none prose-lg text-foreground-muted">
-                        {/* 
-                           Note: In a real app, use a markdown rendered like react-markdown. 
-                           For now, we just display the text properly with line breaks 
-                        */}
-                        <div className="whitespace-pre-wrap">{post.content}</div>
+                    <div className="prose max-w-none prose-lg text-foreground-muted">
+                        <div dangerouslySetInnerHTML={{ __html: post.content }} />
                     </div>
                 </article>
+
+                <CommentSection slug={post.slug} />
             </Section>
         </Container>
     );

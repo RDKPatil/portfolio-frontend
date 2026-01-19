@@ -12,7 +12,7 @@ class AboutController extends Controller
      */
     public function index()
     {
-        $sections = \App\Models\AboutSection::all()->groupBy('section_type');
+        $sections = \App\Models\AboutSection::orderBy('order')->get();
         return response()->json($sections);
     }
 

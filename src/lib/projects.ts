@@ -13,11 +13,22 @@ export interface Project {
     featured?: boolean;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+// Helper to ensure we use IPv4 localhost for server-side fetches and handle /api suffix
+const getBaseUrl = () => {
+    let url = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+    // If running on server and using localhost, force 127.0.0.1 to avoid IPv6 issues
+    if (typeof window === 'undefined') {
+        url = url.replace('localhost', '127.0.0.1');
+    }
+    // Ensure no trailing slash
+    return url.replace(/\/$/, '');
+};
+
+const API_URL = getBaseUrl();
 
 async function fetchProjectsFromAPI(): Promise<Project[]> {
     try {
-        const response = await fetch(`${API_URL}/api/projects`, {
+        const response = await fetch(`${API_URL}/projects`, {
             next: { revalidate: 3600 }, // Cache for 1 hour
         });
 
@@ -26,7 +37,12 @@ async function fetchProjectsFromAPI(): Promise<Project[]> {
         }
 
         const data = await response.json();
-        return data;
+
+        // Map backend snake_case to frontend camelCase
+        return data.map((item: any) => ({
+            ...item,
+            techStack: item.tech_stack || [], // Map tech_stack to techStack
+        }));
     } catch (error) {
         console.warn('Failed to fetch from API, using static data:', error);
         return staticProjects;

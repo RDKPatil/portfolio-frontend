@@ -1,9 +1,10 @@
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/ui/Section";
 import { ProjectCard } from "@/components/project/ProjectCard";
-import { projects } from "@/lib/projects";
+import { getProjects } from "@/lib/projects";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+    const projects = await getProjects();
     return (
         <Container>
             <Section>

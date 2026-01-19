@@ -16,7 +16,9 @@ class Project extends Model
         'solution',
         'impact',
         'tech_stack',
-        'featured'
+        'github_link',
+        'demo_link',
+        'featured',
     ];
 
     protected $casts = [

@@ -22,7 +22,7 @@
     </script>
 </head>
 
-<body class="bg-gray-50 text-slate-900 font-sans antialiased">
+<body class="bg-gray-50 text-slate-900 font-sans antialiased h-screen overflow-hidden">
     <div class="min-h-screen flex">
         <!-- Sidebar -->
         <aside class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:flex flex-col">

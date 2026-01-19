@@ -1,36 +1,34 @@
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
+import { getSkills, Skill } from "@/lib/data";
 
 interface SkillCategory {
     title: string;
     skills: string[];
 }
 
-const skillCategories: SkillCategory[] = [
-    {
-        title: "Programming Languages",
-        skills: ["Java", "Python", "PHP", "JavaScript", "TypeScript"]
-    },
-    {
-        title: "Frameworks & Libraries",
-        skills: ["Laravel", "React.js", "Node.js", "Flutter", "AngularJS", "Bootstrap", "JSP", "Servlets"]
-    },
-    {
-        title: "Web & Cloud",
-        skills: ["REST APIs", "HTML5/CSS3", "AWS (Basics)", "Shopify", "XML"]
-    },
-    {
-        title: "Data & Reporting",
-        skills: ["MySQL", "MongoDB", "Power BI", "JDBC"]
-    },
-    {
-        title: "Leadership & Methodology",
-        skills: ["Team Mentoring", "System Design", "Agile/Scrum", "Code Reviews", "Jira", "Technical Documentation"]
-    }
-];
+export default async function SkillsPage() {
+    const skills = await getSkills();
 
-export default function SkillsPage() {
+    // Group skills by category
+    const skillsByCategory: Record<string, string[]> = {};
+    skills.forEach(skill => {
+        if (!skillsByCategory[skill.category]) {
+            skillsByCategory[skill.category] = [];
+        }
+        skillsByCategory[skill.category].push(skill.name);
+    });
+
+    // Convert to array of objects for rendering
+    const categories: SkillCategory[] = Object.entries(skillsByCategory).map(([title, skills]) => ({
+        title,
+        skills
+    }));
+
+    // Optional: Define a specific order for categories if needed, otherwise they appear in order of discovery
+    // For now, we trust the database order if we seeded carefully, or we can just map.
+
     return (
         <Container>
             <Section>
@@ -42,7 +40,7 @@ export default function SkillsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {skillCategories.map((category, index) => (
+                    {categories.map((category, index) => (
                         <Card key={index} className="flex flex-col h-full">
                             <h2 className="text-lg font-bold mb-4 text-foreground border-b border-gray-100 pb-2">{category.title}</h2>
                             <div className="flex flex-wrap gap-2">

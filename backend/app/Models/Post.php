@@ -13,7 +13,10 @@ class Post extends Model
         'excerpt',
         'content',
         'published_at',
-        'is_published'
+        'is_published',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [
@@ -26,5 +29,10 @@ class Post extends Model
     public function getImageUrlAttribute()
     {
         return $this->image ? asset('storage/' . $this->image) : null;
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
     }
 }

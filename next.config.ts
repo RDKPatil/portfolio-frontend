@@ -2,25 +2,30 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  /* 
-   * Vercel handles compression and caching automatically.
-   * Image optimization is enabled by default for local assets.
-   * If using external images, add domains here.
-   */
   images: {
+    // Disable server-side optimization to avoid "resolved to private ip" errors on localhost/LAN
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '8000',
-        pathname: '/storage/**',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        pathname: '/**',
       },
       {
         protocol: 'http',
         hostname: '192.168.3.131',
-        port: '8000',
-        pathname: '/storage/**',
+        pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'portfolio-backend-zwxj.onrender.com',
+        pathname: '/**',
+      }
     ],
   },
 };

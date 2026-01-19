@@ -25,3 +25,5 @@ Route::get('/contact', [\App\Http\Controllers\Api\ContactController::class, 'ind
 Route::post('/contact', [\App\Http\Controllers\Api\ContactController::class, 'store']);
 Route::get('/posts', [\App\Http\Controllers\Api\PostController::class, 'index']);
 Route::get('/posts/{slug}', [\App\Http\Controllers\Api\PostController::class, 'show']);
+Route::get('/posts/{slug}/comments', [\App\Http\Controllers\Api\CommentController::class, 'index']);
+Route::post('/posts/{slug}/comments', [\App\Http\Controllers\Api\CommentController::class, 'store']);

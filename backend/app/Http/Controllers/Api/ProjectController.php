@@ -10,12 +10,20 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(\App\Models\Project::all());
+        $query = \App\Models\Project::query();
+
+        if ($request->has('featured') && $request->boolean('featured')) {
+            $query->where('featured', true);
+        }
+
+        $projects = $query->orderBy('created_at', 'desc')->get(); // Or order by some other field
+
+        return response()->json($projects);
     }
 
-    public function show($slug)
+    public function show(string $slug)
     {
         $project = \App\Models\Project::where('slug', $slug)->firstOrFail();
         return response()->json($project);

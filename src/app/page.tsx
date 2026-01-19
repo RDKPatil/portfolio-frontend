@@ -3,10 +3,11 @@ import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { ProjectCard } from "@/components/project/ProjectCard";
 import Link from "next/link";
-import { projects } from "@/lib/projects";
+import { getProjects } from "@/lib/projects";
 
-export default function Home() {
-  const featuredProjects = projects.slice(0, 2);
+export default async function Home() {
+  const allProjects = await getProjects();
+  const featuredProjects = allProjects.filter(p => p.featured).slice(0, 2);
 
   return (
     <div className="flex flex-col">
