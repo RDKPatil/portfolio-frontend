@@ -28,7 +28,8 @@ class Post extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        // Since 'image' now stores external URLs directly, just return it
+        return $this->image;
     }
 
     public function comments()

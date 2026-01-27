@@ -9,29 +9,18 @@
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 max-w-4xl">
-        <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('posts.store') }}" method="POST">
             @csrf
 
             <div class="space-y-6">
-                {{-- Image Upload Section --}}
+                {{-- Image URL Section --}}
                 <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">Cover Image</label>
-                    <div class="mt-2 flex items-center gap-6">
-                        <div
-                            class="h-32 w-32 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400">
-                            No Image
-                        </div>
-
-                        <div class="flex-1">
-                            <input type="file" name="image" id="image" accept="image/*" class="block w-full text-sm text-slate-500 
-                                    file:mr-4 file:py-2 file:px-4 
-                                    file:rounded-md file:border-0 
-                                    file:text-sm file:font-semibold 
-                                    file:bg-slate-900 file:text-white 
-                                    hover:file:bg-slate-700 transition-colors cursor-pointer">
-                            <p class="mt-2 text-xs text-gray-500">Upload cover image. Standard 16:9 ratio recommended.</p>
-                        </div>
-                    </div>
+                    <label for="image" class="block text-sm font-medium text-gray-700">Cover Image URL</label>
+                    <input type="url" name="image" id="image" value="{{ old('image') }}"
+                        class="mt-2 w-full rounded-md border-gray-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 p-2.5 border"
+                        placeholder="https://example.com/image.jpg">
+                    <p class="mt-2 text-xs text-gray-500">Paste the URL of your cover image (e.g., from Unsplash, Imgur, or
+                        any image hosting service).</p>
                 </div>
 
                 {{-- Basic Info --}}
